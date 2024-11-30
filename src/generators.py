@@ -1,19 +1,29 @@
-def filter_by_currency():
+from typing import Any, Dict, Generator, List
+
+
+def filter_by_currency(transactions: List[Dict[str, Any]], currency: str) -> Generator[Dict[str, Any], None, None]:
     """Генератор для фильтрации транзакций по валюте."""
-    pass
+    for transaction in transactions:
+        if transaction["operationAmount"]["currency"]["code"] == currency:
+            yield transaction
 
 
-def transaction_descriptions():
+def transaction_descriptions(transactions: List[Dict[str, Any]]) -> Generator[str, None, None]:
     """Генератор для получения описаний транзакций."""
-    pass
+    for transaction in transactions:
+        yield transaction["description"]
 
 
-def card_number_generator():
+def card_number_generator(start: int, end: int) -> Generator[str, None, None]:
     """Генератор номеров банковских карт в формате XXXX XXXX XXXX XXXX."""
-    pass
+    for number in range(start, end + 1):
+        # Форматируем номер карты с ведущими нулями
+        formatted_number = f"{number:016d}"  # Преобразуем в строку с 16 цифрами
+        yield f"{formatted_number[:4]} {formatted_number[4:8]} {formatted_number[8:12]} {formatted_number[12:16]}"
+
 
 # Пример данных транзакций
-transactions = [
+transactions: List[Dict[str, Any]] = [
     {
         "id": 939719570,
         "state": "EXECUTED",
